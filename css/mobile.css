@@ -1,0 +1,445 @@
+/* Mobile Navigation Styles */
+@media screen and (min-width: 769px) {
+    .mobile-nav {
+        display: none;
+    }
+    
+    .burger {
+        display: none;
+    }
+    
+    /* Make the header taller and more spacious */
+    header {
+        height: 90px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1001;
+        background-color: var(--primary-color);
+    }
+    
+    nav {
+        display: flex;
+        align-items: center;
+        padding: 0 2rem;
+        height: 100%;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+    
+    /* Position the logo on the left with proper spacing */
+    .logo {
+        position: static;
+        transform: none;
+        flex: 0 0 250px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .logo img {
+        max-height: 40px;
+    }
+    
+    /* Center the navigation with proper spacing */
+    .desktop-nav-container {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        padding: 0 2rem;
+    }
+    
+    .desktop-nav {
+        display: flex;
+        justify-content: center;
+        gap: 3rem;
+    }
+    
+    .desktop-nav li {
+        margin: 0;
+    }
+    
+    .desktop-nav a {
+        color: white;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        font-family: var(--font-main);
+        letter-spacing: 0.5px;
+        font-size: 1.1rem;
+        padding: 0.5rem 0;
+        position: relative;
+    }
+    
+    .desktop-nav a::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--accent-color);
+        transition: width 0.3s ease;
+    }
+    
+    .desktop-nav a:hover {
+        color: var(--accent-color);
+    }
+    
+    .desktop-nav a:hover::after {
+        width: 100%;
+    }
+    
+    /* Position order online button on the right */
+    .order-online-button {
+        position: static;
+        flex: 0 0 150px;
+        margin: 0;
+        display: flex;
+        justify-content: flex-end;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .desktop-nav-container {
+        display: none;
+    }
+    
+    nav {
+        display: flex;
+        justify-content: space-between;
+        padding: 1.2rem 1.5rem;
+        height: 73px; /* Fixed height for the nav bar on mobile */
+        box-sizing: border-box;
+    }
+    
+    .logo {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        justify-content: center;
+    }
+    
+    .logo img {
+        max-height: 40px;
+    }
+    
+    body.nav-open {
+        overflow: hidden;
+    }
+    
+    .burger {
+        display: block;
+        z-index: 1502; /* Higher than mobile nav to keep it clickable */
+        cursor: pointer;
+        position: relative; /* Needed for proper positioning */
+        width: 26px;
+        height: 20px; /* Set explicit height to contain all lines properly */
+    }
+    
+    .burger div {
+        width: 26px;
+        height: 2px;
+        background-color: white;
+        margin: 4px 0; /* Reduce margin and ensure it's only vertical */
+        transition: all 0.3s ease;
+        transform-origin: center;
+        position: absolute;
+    }
+    
+    .burger .line1 {
+        top: 0;
+    }
+    
+    .burger .line2 {
+        top: 8px;
+    }
+    
+    .burger .line3 {
+        top: 16px;
+    }
+    
+    /* Hamburger to X animation */
+    .burger.active .line1 {
+        transform: translateY(8px) rotate(45deg);
+        background-color: white;
+        width: 26px;
+        height: 2px;
+        top: 0;
+    }
+    
+    .burger.active .line2 {
+        opacity: 0;
+    }
+    
+    .burger.active .line3 {
+        transform: translateY(-8px) rotate(-45deg);
+        background-color: white;
+        width: 26px;
+        height: 2px;
+        top: 16px;
+    }
+    
+    /* Full-screen mobile navigation */
+    .mobile-nav-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: rgba(0,0,0,0.5);
+        z-index: 1499;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    
+    .mobile-nav {
+        position: fixed;
+        top: 73px; /* Match the exact height of the header in mobile view */
+        left: -100%; /* Start off-screen */
+        width: 75%;
+        height: calc(100vh - 73px); /* Adjust to match the header height */
+        background-color: white;
+        z-index: 1500;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start; /* Left align content */
+        opacity: 1;
+        visibility: visible;
+        transition: all 0.3s ease;
+        box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        margin-top: 0; /* Ensure no gap */
+        padding-top: 1.5rem; /* Reduced top spacing */
+    }
+    
+    .nav-active ~ .mobile-nav-overlay {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    /* Close nav button removed */
+    
+    .mobile-nav.nav-active {
+        left: 0; /* Slide in from the left */
+    }
+    
+    .nav-links {
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start; /* Left align items */
+        padding: 0 0 2rem 1rem; /* Less padding to move items more to the left */
+    }
+    
+    .nav-links li {
+        width: auto;
+        text-align: left;
+        margin: 0.4rem 0; /* Reduced spacing between items */
+        opacity: 1; /* Always visible - no animation */
+    }
+    
+    /* Mobile Order Now button */
+    .mobile-order-button {
+        margin-top: 1rem;
+        background-color: var(--primary-color);
+        border-radius: 50px;
+        padding: 0.4rem 1.2rem; /* Smaller padding */
+        display: inline-block;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .mobile-order-button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        transition: left 0.8s ease;
+        z-index: 0;
+    }
+    
+    .mobile-order-button:hover::before {
+        left: 100%;
+        animation: shimmer 1.5s infinite;
+    }
+    
+    .mobile-order-button a {
+        color: white !important;
+        font-size: 0.9rem !important; /* Smaller font */
+        font-weight: 700 !important;
+        font-family: var(--font-main) !important;
+        text-transform: none !important;
+        position: relative;
+        z-index: 1;
+    }
+    
+    /* No longer needed for animation */
+    
+    .nav-links li a {
+        display: block;
+        color: var(--primary-color);
+        font-size: 1.4rem; /* Smaller font size */
+        font-weight: 600;
+        padding: 0.3rem 0;
+        text-transform: lowercase;
+        font-family: 'Playfair Display', serif;
+        letter-spacing: 0.5px;
+    }
+    
+    /* Animation delays removed */
+    
+    /* Ensure burger/X stays visible when menu is active */
+    body.nav-open .burger {
+        position: fixed; /* Keep it fixed on the screen */
+        top: 25px; /* Position to match the original burger position */
+        left: 20px;
+        display: flex !important; /* Force display */
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 26px;
+        height: 26px;
+        background-color: transparent;
+    }
+    
+    body.nav-open .burger div {
+        background-color: white;
+    }
+    
+    /* Fix the hero section spacing */
+    .hero {
+        margin-top: 0;
+        padding-top: 73px; /* Match header height */
+    }
+    
+    /* Mobile Sticky Footer */
+    .mobile-sticky-footer {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: var(--primary-color);
+        padding: 0.8rem 1rem;
+        z-index: 999;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    .mobile-sticky-footer-buttons {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+    
+    .mobile-sticky-button {
+        flex: 1;
+        padding: 0.7rem 1rem;
+        border-radius: 8px;
+        font-family: var(--font-main);
+        font-weight: 700;
+        font-size: 0.9rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    
+    .mobile-sticky-button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        transition: left 0.8s ease;
+        z-index: -1;
+    }
+    
+    .mobile-sticky-button:active,
+    .mobile-sticky-button.button-clicked {
+        transform: scale(0.95);
+    }
+    
+    .mobile-sticky-button:hover::before,
+    .mobile-sticky-button.button-clicked::before {
+        left: 100%;
+        animation: shimmer 1.5s infinite;
+    }
+    
+    @keyframes button-pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(0.95); }
+        100% { transform: scale(1); }
+    }
+    
+    .button-clicked {
+        animation: button-pulse 0.3s ease;
+    }
+    
+    .find-us-button {
+        background-color: white;
+        color: var(--primary-color);
+    }
+    
+    .order-online-mobile {
+        background-color: var(--secondary-color);
+        color: var(--primary-color);
+    }
+    
+    /* Mobile Footer Styles */
+    footer {
+        padding-top: 2rem;
+        padding-bottom: 4.5rem; /* Add space for sticky footer */
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        text-align: center;
+    }
+    
+    .footer-section.footer-logo {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 2rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 2rem;
+    }
+    
+    .footer-logo img {
+        max-height: 120px;
+    }
+    
+    .footer-section.footer-links, 
+    .footer-section.footer-newsletter {
+        width: 100%;
+        padding-left: 0;
+    }
+    
+    .footer-section.footer-links {
+        margin-top: 1rem;
+    }
+    
+    .footer-links ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+        padding-top: 1rem;
+    }
+    
+    .footer-newsletter form {
+        max-width: 300px;
+        margin: 0 auto;
+    }
+}

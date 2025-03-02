@@ -1,0 +1,11 @@
+For image placeholders, you should add real images to the img directory. 
+
+For now, you can use placeholder image services like:
+- https://placehold.co/ 
+- https://placeholder.com/
+- https://picsum.photos/
+
+Example usage in HTML:
+<img src="https://placehold.co/400x300/2c6e91/white?text=Trina's+Food" alt="Placeholder Image">
+
+Replace these with actual food truck and menu item photos for a real website.

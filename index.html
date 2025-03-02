@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trina's Fried Fish Sandwiches</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/mobile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="burger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+            <div class="logo">
+                <a href="#home">
+                    <img src="img/logo-black.png" alt="Trina's Food Truck Logo">
+                </a>
+            </div>
+            <div class="order-online-button">
+                <a href="#menu" class="order-online">Order Online</a>
+            </div>
+            <div class="desktop-nav-container">
+                <ul class="desktop-nav">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#menu">Menu</a></li>
+                    <li><a href="#location">Location</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    
+    <!-- Mobile navigation outside header to prevent z-index issues -->
+    <div class="mobile-nav">
+        <ul class="nav-links">
+            <li><a href="#home">home</a></li>
+            <li><a href="#menu">menu</a></li>
+            <li><a href="#location">location</a></li>
+            <li><a href="#about">about</a></li>
+            <li><a href="#contact">contact</a></li>
+            <li class="mobile-order-button"><a href="#menu">Order Now</a></li>
+        </ul>
+    </div>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Fresh Fried Fish Sandwiches</h1>
+            <h2>Made with love, served with pride</h2>
+            <button class="cta-button">View Our Menu</button>
+        </div>
+    </section>
+
+    <section id="menu" class="menu-section">
+        <h2>Our Menu</h2>
+        
+        <div class="menu-tabs">
+            <button class="menu-tab active" data-category="signature">Signature Sandwiches</button>
+            <button class="menu-tab" data-category="sides">Sides</button>
+            <button class="menu-tab" data-category="drinks">Beverages</button>
+        </div>
+        
+        <div class="menu-container" id="menu-items">
+            <!-- Menu items will be dynamically loaded here -->
+        </div>
+    </section>
+    
+    <section id="special" class="special-section">
+        <div class="special-content">
+            <h2>Today's Special</h2>
+            <div class="special-item" id="special-item">
+                <!-- Special item will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <section id="food-showcase" class="food-showcase-section">
+        <div class="showcase-container">
+            <div class="showcase-text">
+                <h2 class="showcase-title">The Perfect Crispy Fish Sandwich</h2>
+                <p class="showcase-description">
+                    Discover our signature sandwich made with locally-sourced Atlantic cod, dipped in our secret 
+                    beer batter, and fried to golden perfection. Topped with homemade tartar sauce, crisp lettuce, 
+                    and vine-ripened tomatoes on a toasted brioche bun. Each bite delivers the perfect balance of 
+                    crunch, tenderness, and flavor that has made Trina's famous across the city.
+                </p>
+                <button class="showcase-button">
+                    Order Now <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+            <div class="showcase-image">
+                <img src="img/fish-sandwich.jpg" alt="Trina's Perfect Crispy Fish Sandwich">
+            </div>
+        </div>
+    </section>
+
+    <section id="location" class="location-section">
+        <h2>Find Our Truck</h2>
+        <div class="location-container">
+            <div class="location-info">
+                <h3>Weekly Schedule</h3>
+                <div id="schedule">
+                    <!-- Schedule will be dynamically loaded here -->
+                </div>
+            </div>
+            <div class="location-map">
+                <img src="img/fish-sandwich.jpg" alt="Map location">
+                <p>123 Street Food Lane, Foodville</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about-section">
+        <div class="about-content">
+            <div class="about-image">
+                <img src="img/fish-sandwich.jpg" alt="Trina's Food Truck">
+            </div>
+            <div class="about-text">
+                <h2>About Trina's</h2>
+                <p>At Trina's, we believe that the perfect fried fish sandwich starts with the freshest catch of the day. Our founder, Trina, grew up in a coastal town where fresh seafood was a way of life.</p>
+                <p>Her mission is simple: bring that authentic taste to the streets, using family recipes that have been perfected over generations.</p>
+                <p>Every sandwich is made to order, ensuring that each bite is as delicious as the last. We source all our ingredients locally whenever possible and are committed to sustainable fishing practices.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <h2>Contact Us</h2>
+        <div class="contact-container">
+            <div class="contact-form">
+                <form id="contact-form">
+                    <input type="text" placeholder="Name" required>
+                    <input type="email" placeholder="Email" required>
+                    <textarea placeholder="Message" required></textarea>
+                    <button type="submit">Send Message</button>
+                </form>
+            </div>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <p>(555) 123-4567</p>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <p>info@trinasfishsandwiches.com</p>
+                </div>
+                <div class="social-media">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section footer-logo">
+                <img src="img/footer_logo.png" alt="Trina's Food Truck Logo">
+            </div>
+            <div class="footer-section footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#menu">Menu</a></li>
+                    <li><a href="#location">Location</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section footer-newsletter">
+                <h3>Stay Updated</h3>
+                <p>Subscribe to our newsletter for special offers and location updates!</p>
+                <form id="newsletter-form">
+                    <input type="email" placeholder="Your Email" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Trina's. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Mobile Sticky Footer -->
+    <div class="mobile-sticky-footer">
+        <div class="mobile-sticky-footer-buttons">
+            <a href="#location" class="mobile-sticky-button find-us-button">Find Us</a>
+            <a href="#menu" class="mobile-sticky-button order-online-mobile">Order Online</a>
+        </div>
+    </div>
+
+    <script src="js/database.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
