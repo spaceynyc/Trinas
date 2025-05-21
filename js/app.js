@@ -21,7 +21,107 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initialize mobile sticky footer
     initMobileStickyFooter();
+    
+    // Apply hero text animations
+    initHeroTextAnimation();
+
+    // Initialize Hero Parallax
+    initHeroParallax();
+
+    // Initialize Image Parallax for specific sections
+    initImageParallax('.food-showcase-section', '.showcase-image img', 0.1); // Subtle effect
+    initImageParallax('.about-section', '.about-image img', 0.1);      // Subtle effect
 });
+
+function initImageParallax(sectionSelector, imageSelector, intensity) {
+    const section = document.querySelector(sectionSelector);
+    const image = section ? section.querySelector(imageSelector) : null;
+
+    if (!section || !image) {
+        // console.warn(`Image parallax: Section or image not found for selectors: ${sectionSelector}, ${imageSelector}`);
+        return;
+    }
+
+    let ticking = false;
+    let sectionRect = section.getBoundingClientRect(); // Get initial dimensions
+
+    const parallaxScrollHandler = () => {
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                const scrollPosition = window.pageYOffset;
+                // Calculate how much of the section is visible or how far it has scrolled past a point
+                // This needs to be relative to the viewport and the element's position
+                const viewportHeight = window.innerHeight;
+                
+                // Update sectionRect if it might have changed (e.g. resize, though not handled here)
+                sectionRect = section.getBoundingClientRect();
+
+                // Calculate a value based on how much the section has entered or exited the viewport
+                // A value from -1 (just below viewport) to 1 (just above viewport), 0 when centered.
+                const scrollFactor = (sectionRect.top - viewportHeight / 2 + sectionRect.height / 2) / (viewportHeight / 2 + sectionRect.height / 2);
+                
+                // Apply transform. The range of scrollFactor is roughly -1 to 1.
+                // We want a subtle movement, so multiply by a small pixel value.
+                // The intensity parameter can further modulate this.
+                // Positive value moves image down as section scrolls up, negative moves it up.
+                const translateY = -scrollFactor * (50 * intensity); // e.g. max 5px movement if intensity is 0.1 and scrollFactor maxes at 1
+
+                image.style.transform = `translateY(${translateY}px)`;
+                ticking = false;
+            });
+            ticking = true;
+        }
+    };
+
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                window.addEventListener('scroll', parallaxScrollHandler, { passive: true });
+                // Initial call to set position
+                parallaxScrollHandler();
+            } else {
+                window.removeEventListener('scroll', parallaxScrollHandler);
+                // Optional: Reset image position when not in view
+                // image.style.transform = 'translateY(0px)'; 
+            }
+        });
+    }, { threshold: 0 }); // Trigger as soon as any part of the section is visible
+
+    observer.observe(section);
+}
+
+
+function initHeroParallax() {
+    const hero = document.querySelector('.hero');
+    if (!hero) return;
+
+    let ticking = false;
+
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                const scrollPosition = window.pageYOffset;
+                // Apply parallax effect - adjust multiplier for desired intensity
+                // A smaller multiplier means a more subtle effect (image moves slower)
+                hero.style.backgroundPositionY = (scrollPosition * 0.4) + 'px';
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+}
+
+function initHeroTextAnimation() {
+    const heroH1 = document.querySelector('.hero h1');
+    const heroH2 = document.querySelector('.hero h2');
+
+    if (heroH1) {
+        heroH1.classList.add('hero-h1-animate');
+    }
+    if (heroH2) {
+        heroH2.classList.add('hero-h2-animate');
+    }
+}
 
 // Navigation functionality
 function initNavigation() {
@@ -164,44 +264,89 @@ function loadMenuItems() {
 // Set up menu tab click handlers
 function setupMenuTabs() {
     const menuTabs = document.querySelectorAll('.menu-tab');
-    
+    const menuCategories = document.querySelectorAll('.menu-category');
+    const animationDuration = 300; // Corresponds to .is-exiting animation time
+
     menuTabs.forEach(tab => {
         tab.addEventListener('click', () => {
-            // Remove active class from all tabs
-            menuTabs.forEach(t => t.classList.remove('active'));
-            
-            // Add active class to clicked tab
+            const newCategoryName = tab.getAttribute('data-category');
+            const currentActiveTab = document.querySelector('.menu-tab.active');
+            const currentActiveCategoryName = currentActiveTab ? currentActiveTab.getAttribute('data-category') : null;
+
+            if (newCategoryName === currentActiveCategoryName) {
+                return; // Do nothing if the same tab is clicked
+            }
+
+            // Update tab active states
+            if(currentActiveTab) currentActiveTab.classList.remove('active');
             tab.classList.add('active');
-            
-            // Get category from data attribute
-            const category = tab.getAttribute('data-category');
-            
-            // Hide all menu categories
-            const menuCategories = document.querySelectorAll('.menu-category');
-            menuCategories.forEach(cat => cat.classList.remove('active'));
-            
-            // Show the selected category
-            const selectedCategory = document.querySelector(`.menu-category[data-category="${category}"]`);
-            selectedCategory.classList.add('active');
-            
-            // Re-initialize stagger animations for the newly visible items
-            const staggerItems = selectedCategory.querySelectorAll('.stagger-item');
-            staggerItems.forEach(item => {
-                item.classList.remove('visible');
+
+            const oldCategory = document.querySelector('.menu-category.active');
+            const newCategory = document.querySelector(`.menu-category[data-category="${newCategoryName}"]`);
+
+            if (oldCategory) {
+                oldCategory.classList.add('is-exiting');
                 
-                // Small delay before adding visible class again
+                // Clean up stagger items from old category to prevent re-animation issues
+                const oldStaggerItems = oldCategory.querySelectorAll('.stagger-item.visible');
+                oldStaggerItems.forEach(item => {
+                    item.classList.remove('visible'); // Make them invisible
+                     // Optionally, unobserve them if your observer setup doesn't handle this well
+                    if (globalStaggerObserver) globalStaggerObserver.unobserve(item);
+                });
+
+
                 setTimeout(() => {
-                    item.classList.add('visible');
-                }, 50);
-            });
+                    oldCategory.classList.remove('active');
+                    oldCategory.classList.remove('is-exiting');
+                    // Items inside oldCategory are now display:none due to .active removal
+
+                    if (newCategory) {
+                        newCategory.classList.add('active');
+                        // Prepare new items for animation (they are now display:block)
+                        const newMenuItems = newCategory.querySelectorAll('.menu-item');
+                        newMenuItems.forEach(item => {
+                            // Ensure they are observed for scroll animations if not already visible
+                            if (!item.classList.contains('stagger-item')) {
+                                item.classList.add('stagger-item');
+                            }
+                            item.classList.remove('visible'); // Ensure they are ready to be animated by observer
+                            if (globalStaggerObserver) globalStaggerObserver.observe(item);
+                        });
+                    }
+                }, animationDuration);
+            } else if (newCategory) { // No old category, just activate the new one
+                newCategory.classList.add('active');
+                const newMenuItems = newCategory.querySelectorAll('.menu-item');
+                newMenuItems.forEach(item => {
+                     if (!item.classList.contains('stagger-item')) {
+                        item.classList.add('stagger-item');
+                    }
+                    if (globalStaggerObserver) globalStaggerObserver.observe(item);
+                });
+            }
         });
     });
+
+    // Initial setup for the default active category's items to be observed
+    const initialActiveCategory = document.querySelector('.menu-category.active');
+    if (initialActiveCategory) {
+        const initialMenuItems = initialActiveCategory.querySelectorAll('.menu-item');
+        initialMenuItems.forEach(item => {
+            if (!item.classList.contains('stagger-item')) {
+                item.classList.add('stagger-item');
+            }
+            if (globalStaggerObserver) globalStaggerObserver.observe(item);
+        });
+    }
 }
+
 
 // Create menu item element
 function createMenuItemElement(item) {
     const menuItem = document.createElement('div');
-    menuItem.className = 'menu-item stagger-item'; // Add stagger-item class for animation
+    // .stagger-item will be added dynamically by setupMenuTabs/loadMenuItems if needed
+    menuItem.className = 'menu-item'; 
     menuItem.setAttribute('data-id', item.id);
     
     // Use fish-sandwich.jpg as the placeholder image for all menu items
@@ -406,45 +551,21 @@ function initMobileStickyFooter() {
     });
 }
 
+// Global variable for the stagger observer
+let globalStaggerObserver;
+
 // Initialize scroll animations using Intersection Observer
 function initScrollAnimations() {
-    // Get all sections to apply the fade-in effect
     const sections = document.querySelectorAll('section');
     const sectionDividers = document.querySelectorAll('.section-divider');
-    
-    // Add fade-in class to all sections
+
     sections.forEach(section => {
-        if (!section.classList.contains('hero')) { // Skip hero section as it's already visible
+        if (!section.classList.contains('hero')) {
             section.classList.add('fade-in');
         }
     });
-    
-    // Add fade-in class to section dividers
-    sectionDividers.forEach(divider => {
-        divider.classList.add('fade-in');
-    });
-    
-    // Apply stagger effect to menu items (they will be added after menu loading)
-    const applyStaggerToMenuItems = () => {
-        const menuItems = document.querySelectorAll('.menu-item');
-        menuItems.forEach(item => {
-            if (!item.classList.contains('stagger-item')) {
-                item.classList.add('stagger-item');
-            }
-        });
-        
-        const scheduleItems = document.querySelectorAll('.schedule-item');
-        scheduleItems.forEach(item => {
-            if (!item.classList.contains('stagger-item')) {
-                item.classList.add('stagger-item');
-            }
-        });
-    };
-    
-    // Add stagger classes after a short delay to ensure the items have been loaded
-    setTimeout(applyStaggerToMenuItems, 100);
-    
-    // Create intersection observer for fade-in elements
+    sectionDividers.forEach(divider => divider.classList.add('fade-in'));
+
     const fadeObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             // Add visible class when element enters the viewport
@@ -465,42 +586,53 @@ function initScrollAnimations() {
         });
     }, 200);
     
-    // Create intersection observer for staggered elements with a counter for child elements
-    const staggerElements = new Map(); // Map to store staggered parent elements and their children count
-    
-    const staggerObserver = new IntersectionObserver((entries) => {
+    const staggerElementsMap = new Map();
+    globalStaggerObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             const target = entry.target;
-            
             if (entry.isIntersecting) {
-                // Calculate the parent container (section or container div)
-                const parentContainer = target.closest('section') || target.parentElement;
+                const parentContainer = target.closest('section, .menu-category') || target.parentElement;
+                let counter = staggerElementsMap.get(parentContainer) || 0;
                 
-                // Get or initialize the counter for this parent
-                let counter = staggerElements.get(parentContainer) || 0;
+                // Apply the 'visible' class with a delay.
+                // The CSS animation for .menu-category.active .menu-item is separate from this .stagger-item.visible logic.
+                // The .stagger-item.visible is for generic scroll-triggered staggering.
+                // Menu tab switching has its own explicit animation via menuCategoryItemsIn.
+                // We need to ensure they don't conflict or that one is prioritized.
+                // For menu items specifically, their entrance is handled by .menu-category.active .menu-item animation.
+                // So, for .menu-item, .visible class from observer might not be needed if tab switching handles it.
+                // However, if a long menu category scrolls, items further down would need this.
                 
-                // Add a slight delay based on the counter for a staggered effect
-                setTimeout(() => {
+                // If the target is a menu-item AND its parent .menu-category is already active (meaning it's a tab switch, not scroll)
+                // Menu items in an active category are animated by tab switching CSS primarily.
+                // Add .visible for consistency for other effects (e.g. image reveal) but without scroll-stagger delay.
+                if (target.classList.contains('menu-item') && target.closest('.menu-category.active')) {
                     target.classList.add('visible');
-                }, counter * 100);
-                
-                // Increment counter for the next element in this parent
-                staggerElements.set(parentContainer, counter + 1);
+                } else {
+                    // Apply scroll-based stagger for other items, or menu items in a long, scrolling category.
+                    setTimeout(() => {
+                        target.classList.add('visible');
+                    }, counter * 100); // 100ms stagger delay
+                }
+                staggerElementsMap.set(parentContainer, counter + 1);
             } else {
-                // Remove visible class when element leaves the viewport
                 target.classList.remove('visible');
-                
-                // Reset counter for this parent when elements are no longer visible
-                const parentContainer = target.closest('section') || target.parentElement;
-                staggerElements.set(parentContainer, 0);
+                const parentContainer = target.closest('section, .menu-category') || target.parentElement;
+                staggerElementsMap.set(parentContainer, 0); // Reset counter for this parent
             }
         });
     }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-    
-    // Observe all staggered elements
+
+    // Initial observation for non-menu .stagger-item elements (e.g., schedule items)
+    // Menu items are handled by setupMenuTabs after they are loaded/filtered
+    document.querySelectorAll('.stagger-item:not(.menu-item)').forEach(element => {
+       if (globalStaggerObserver) globalStaggerObserver.observe(element);
+    });
+    // Menu items are observed via loadMenuItems and setupMenuTabs
+
     setTimeout(() => {
-        document.querySelectorAll('.stagger-item').forEach(element => {
-            staggerObserver.observe(element);
+        document.querySelectorAll('.fade-in').forEach(element => {
+            fadeObserver.observe(element);
         });
-    }, 300);
+    }, 200);
 }

@@ -1,13 +1,17 @@
 /* Base styles and variables */
 :root {
-    --primary-color: #C30101;
+    --primary-color: #B70000; /* Slightly darker and less saturated red */
+    --primary-gradient: linear-gradient(135deg, #C30101, #A00000);
     --secondary-color: #FFD454;
-    --accent-color: #FFD454;
-    --light-color: #f8f8f8;
-    --dark-color: #333;
+    --accent-color: #FFD454; /* Keeping this vibrant for accents */
+    --light-color: #f9f9f9; /* Slightly off-white for a softer background */
+    --dark-color: #2c2c2c; /* Softer black for text */
     --font-main: 'Montserrat', sans-serif;
     --font-accent: 'Pacifico', cursive;
     --font-heading: 'Playfair Display', serif;
+    --shadow-soft: 0 4px 12px rgba(0,0,0,0.06);
+    --shadow-medium: 0 8px 24px rgba(0,0,0,0.08);
+    --shadow-large: 0 15px 35px rgba(0,0,0,0.1);
 }
 
 * {
@@ -18,7 +22,7 @@
 
 html {
     scroll-behavior: smooth;
-    font-size: 16px;
+    font-size: 17px; /* Slightly larger base font size */
 }
 
 body {
@@ -59,8 +63,8 @@ header {
     left: 0;
     width: 100%;
     z-index: 1000;
-    background-color: var(--primary-color);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    background: var(--primary-gradient); /* Applied gradient */
+    box-shadow: var(--shadow-medium); /* Softer shadow */
     height: 73px; /* Fixed height to match mobile nav */
 }
 
@@ -105,7 +109,7 @@ nav {
 .nav-links a {
     color: white;
     font-weight: 500;
-    transition: all 0.3s ease;
+    transition: color 0.25s ease-in-out; /* More specific transition */
     font-family: var(--font-main);
     letter-spacing: 0.5px;
     font-size: 1.05rem;
@@ -133,12 +137,12 @@ nav {
     font-family: var(--font-main);
     font-weight: 700;
     font-size: 0.95rem;
-    padding: 0.6rem 1.2rem;
-    border-radius: 50px;
+    padding: 0.7rem 1.4rem; /* Slightly more padding */
+    border-radius: 30px; /* Refined border-radius */
     text-decoration: none;
     letter-spacing: 0.5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
+    box-shadow: var(--shadow-soft); /* Softer shadow */
+    transition: transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out, background-color 0.25s ease-in-out;
     position: relative;
     overflow: hidden;
     z-index: 1;
@@ -151,28 +155,28 @@ nav {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    transition: left 0.8s ease;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent); /* Slightly more subtle shimmer */
+    transition: left 0.7s ease-in-out; /* Smoother and slightly faster shimmer travel */
     z-index: -1;
 }
 
 .order-online:hover {
     transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-medium); /* Softer shadow */
     background-color: #FFDE7D;
 }
 
 .order-online:hover::before {
     left: 100%;
-    animation: shimmer 1.5s infinite;
+    animation: shimmer 1.8s infinite linear; /* Slower and linear for a smoother, continuous feel */
 }
 
 @keyframes shimmer {
     0% {
-        left: -100%;
+        left: -120%; /* Start further left to ensure smooth entry */
     }
     100% {
-        left: 100%;
+        left: 120%; /* End further right for smooth exit */
     }
 }
 
@@ -187,11 +191,23 @@ nav {
     background-position: center;
     color: white;
     text-align: center;
-    padding-top: 4rem;
+    padding-top: 5rem; /* Increased padding */
+    overflow: hidden; /* Ensure parallax effect doesn't cause overflow issues */
 }
 
 .hero-content {
-    max-width: 800px;
+    max-width: 850px; /* Slightly wider */
+}
+
+@keyframes slideUpFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .hero h1 {
@@ -201,14 +217,27 @@ nav {
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5), 
                  0px 0px 10px rgba(0, 0, 0, 0.3), 
                  1px 1px 1px rgba(0, 0, 0, 0.8);
+    opacity: 0; /* Initial state for animation */
+    transform: translateY(40px); /* Initial state for animation */
 }
 
 .hero h2 {
-    font-size: 1.6rem;
-    margin-bottom: 2rem;
+    font-size: 1.7rem; /* Slightly larger */
+    margin-bottom: 2.5rem; /* Increased spacing */
     font-weight: 400;
     font-family: var(--font-main);
     letter-spacing: 1px;
+    line-height: 1.7; /* Improved line height */
+    opacity: 0; /* Initial state for animation */
+    transform: translateY(40px); /* Initial state for animation */
+}
+
+.hero-h1-animate {
+    animation: slideUpFadeIn 1s ease-out 0.5s forwards;
+}
+
+.hero-h2-animate {
+    animation: slideUpFadeIn 1s ease-out 0.8s forwards;
 }
 
 .cta-button {
@@ -216,33 +245,34 @@ nav {
     background-color: var(--secondary-color);
     color: var(--primary-color);
     border: none;
-    border-radius: 50px;
-    font-size: 1.2rem;
+    border-radius: 30px; /* Refined border-radius */
+    font-size: 1.25rem; /* Slightly larger */
     font-family: var(--font-main);
     font-weight: 700;
     letter-spacing: 1px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out, background-color 0.25s ease-in-out;
+    box-shadow: var(--shadow-medium); /* Softer shadow */
 }
 
 .cta-button:hover {
     background-color: #FFDE7D;
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    transform: translateY(-4px); /* Slightly more lift */
+    box-shadow: var(--shadow-large); /* Softer, more diffused shadow */
 }
 
 /* Menu Section */
 .menu-section {
     text-align: center;
-    background-color: white;
-    padding-bottom: 6rem;
+    background-color: var(--light-color); /* Use light color variable */
+    padding-top: 6rem; /* Added top padding */
+    padding-bottom: 7rem; /* Increased bottom padding */
 }
 
 .menu-section h2 {
     color: var(--primary-color);
-    font-size: 2.8rem;
-    margin-bottom: 2rem;
+    font-size: 3rem; /* Slightly larger */
+    margin-bottom: 2.5rem; /* Increased spacing */
     font-family: var(--font-heading);
     position: relative;
     display: inline-block;
@@ -270,26 +300,28 @@ nav {
 
 .menu-tab {
     padding: 0.8rem 1.5rem;
-    background-color: #f5f5f5;
+    background-color: #e9e9e9; /* Slightly darker inactive state */
     border: none;
-    border-radius: 50px;
+    border-radius: 30px; /* Refined border-radius */
     font-family: var(--font-main);
     font-weight: 600;
-    font-size: 1rem;
-    color: #666;
+    font-size: 1.05rem; /* Slightly larger */
+    color: #555; /* Darker text for inactive */
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: transform 0.25s ease-in-out, background-color 0.25s ease-in-out, color 0.25s ease-in-out;
 }
 
 .menu-tab:hover {
-    background-color: #e9e9e9;
+    background-color: #ddd; /* Darken on hover */
     transform: translateY(-3px);
 }
 
 .menu-tab.active {
     background-color: var(--secondary-color);
     color: var(--primary-color);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-soft); /* Softer shadow */
+    font-weight: 700; /* More emphasis */
+    transform: translateY(-1px); /* Slight lift for active tab */
 }
 
 .category-header {
@@ -336,18 +368,51 @@ nav {
     display: block;
 }
 
+@keyframes menuCategoryItemsIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes menuCategoryItemsOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+}
+
+.menu-category.active .menu-item {
+    /* Ensure items are visible for animation if they were part of a fade-out */
+    opacity: 1; 
+    transform: translateY(0);
+    animation: menuCategoryItemsIn 0.4s ease-out forwards;
+}
+
+.menu-category.is-exiting .menu-item {
+    animation: menuCategoryItemsOut 0.3s ease-in forwards;
+}
+
 .menu-item {
     background-color: white;
-    border-radius: 10px;
+    border-radius: 12px; /* Slightly more rounded */
     overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+    box-shadow: var(--shadow-medium); /* Softer shadow */
+    transition: transform 0.3s ease-in-out, box-shadow 0.35s ease-in-out; /* Adjusted transition */
     height: 100%;
 }
 
 .menu-item:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    transform: translateY(-10px) scale(1.02); /* Added subtle scale */
+    box-shadow: var(--shadow-large); /* Softer shadow */
 }
 
 .menu-item img {
@@ -389,28 +454,29 @@ nav {
     background-color: var(--secondary-color);
     color: var(--primary-color);
     border: none;
-    border-radius: 50px;
+    border-radius: 25px; /* Refined border-radius */
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out, background-color 0.25s ease-in-out;
     font-family: var(--font-main);
     font-weight: 600;
     letter-spacing: 0.5px;
     font-size: 0.9rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 0.6rem 1.2rem; /* Added padding */
+    box-shadow: var(--shadow-soft); /* Softer shadow */
 }
 
 .order-button:hover {
     background-color: #FFDE7D;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-3px); /* Consistent lift */
+    box-shadow: var(--shadow-medium); /* Softer shadow */
 }
 
 /* Special Section */
 .special-section {
-    background-color: var(--primary-color);
+    background: var(--primary-gradient); /* Applied gradient */
     color: white;
     text-align: center;
-    background-image: linear-gradient(135deg, #C30101, #930000);
+    padding: 6rem 2rem; /* Added padding */
 }
 
 /* Section dividers removed as requested */
@@ -421,7 +487,7 @@ nav {
     background-color: var(--secondary-color);
     position: relative;
     background-image: linear-gradient(to bottom, #FFE07D, var(--secondary-color));
-    color: var(--dark-color);
+    color: var(--dark-color); /* Ensure contrast with new gradient */
 }
 
 .showcase-container {
@@ -447,8 +513,8 @@ nav {
 .showcase-image img {
     width: 100%;
     height: auto;
-    border-radius: 8px;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    border-radius: 12px; /* More rounded */
+    box-shadow: var(--shadow-large); /* Softer shadow */
     object-fit: cover;
 }
 
@@ -475,25 +541,25 @@ nav {
     font-family: var(--font-main);
     font-weight: 600;
     font-size: 1.1rem;
-    padding: 1rem 2rem;
+    padding: 1rem 2.2rem; /* Increased padding */
     border: none;
-    border-radius: 50px;
+    border-radius: 30px; /* Refined border-radius */
     cursor: pointer;
     display: inline-flex;
     align-items: center;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out, background-color 0.25s ease-in-out;
+    box-shadow: var(--shadow-soft); /* Softer shadow */
 }
 
 .showcase-button i {
     margin-left: 0.5rem;
-    transition: transform 0.3s ease;
+    transition: transform 0.25s ease-in-out; /* Match button transition */
 }
 
 .showcase-button:hover {
     background-color: #FFDE7D;
-    transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-4px); /* Consistent lift with cta-button */
+    box-shadow: var(--shadow-medium); /* Softer shadow */
 }
 
 .showcase-button:hover i {
@@ -618,15 +684,15 @@ nav {
     margin-bottom: 1rem;
     padding: 1rem;
     background-color: white;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px; /* More rounded */
+    box-shadow: var(--shadow-soft); /* Softer shadow */
     font-family: var(--font-main);
-    transition: all 0.3s ease;
+    transition: transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
 }
 
 .schedule-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-4px); /* Slightly more lift */
+    box-shadow: var(--shadow-medium); /* Softer shadow */
 }
 
 .day {
@@ -654,9 +720,9 @@ nav {
 
 /* About Section */
 .about-section {
-    background-color: var(--primary-color);
-    background-image: linear-gradient(to bottom, #E30101, var(--primary-color));
+    background: var(--primary-gradient); /* Applied gradient */
     color: white;
+    padding: 6rem 2rem; /* Added padding */
 }
 
 .about-content {
@@ -674,8 +740,8 @@ nav {
 
 .about-image img {
     width: 100%;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 12px; /* More rounded */
+    box-shadow: var(--shadow-large); /* Softer shadow */
 }
 
 .about-text h2 {
@@ -698,10 +764,10 @@ nav {
 }
 
 .about-text p {
-    margin-bottom: 1.2rem;
+    margin-bottom: 1.5rem; /* Increased spacing */
     font-family: var(--font-main);
-    line-height: 1.8;
-    font-size: 1.05rem;
+    line-height: 1.9; /* Improved line height */
+    font-size: 1.1rem; /* Slightly larger */
     color: white;
 }
 
@@ -754,17 +820,18 @@ nav {
 
 .contact-form input, .contact-form textarea {
     padding: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    padding: 1.1rem; /* Increased padding */
+    border: 1px solid #ccc; /* Slightly darker border */
+    border-radius: 8px; /* More rounded */
     font-family: var(--font-main);
-    font-size: 0.95rem;
-    transition: all 0.3s ease;
+    font-size: 1rem; /* Slightly larger */
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Duration from task */
 }
 
 .contact-form input:focus, .contact-form textarea:focus {
     outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(44, 110, 145, 0.2);
+    border-color: var(--primary-color); /* Border color change on focus */
+    box-shadow: 0 0 0 3px rgba(183, 0, 0, 0.15); 
 }
 
 .contact-form textarea {
@@ -777,20 +844,20 @@ nav {
     background-color: var(--secondary-color);
     color: var(--primary-color);
     border: none;
-    border-radius: 5px;
+    border-radius: 8px; /* More rounded */
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out, background-color 0.25s ease-in-out;
     font-family: var(--font-main);
-    font-weight: 600;
+    font-weight: 700; /* Bolder text */
     letter-spacing: 0.5px;
-    font-size: 1rem;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-size: 1.05rem; /* Slightly larger */
+    box-shadow: var(--shadow-soft); /* Softer shadow */
 }
 
 .contact-form button:hover {
     background-color: #FFDE7D;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-4px); /* More lift, consistent with others */
+    box-shadow: var(--shadow-medium); /* Softer shadow */
 }
 
 .contact-info {
@@ -820,29 +887,30 @@ nav {
 
 .social-icon {
     display: inline-block;
-    width: 40px;
-    height: 40px;
+    width: 44px; /* Slightly larger */
+    height: 44px; /* Slightly larger */
     background-color: var(--secondary-color);
     border-radius: 50%;
     color: var(--primary-color);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
-    font-size: 1.2rem;
+    transition: transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out, background-color 0.25s ease-in-out; /* Existing good transition */
+    font-size: 1.3rem; /* Slightly larger icon */
+    box-shadow: var(--shadow-soft);
 }
 
 .social-icon:hover {
     background-color: #FFDE7D;
-    transform: translateY(-3px);
+    transform: translateY(-4px) scale(1.08); /* Existing good transform */
+    box-shadow: var(--shadow-medium);
 }
 
 /* Footer */
 footer {
-    background-color: var(--primary-color);
+    background: var(--primary-gradient); /* Applied gradient */
     color: white;
-    padding: 3rem 2rem 1rem;
-    background-image: linear-gradient(135deg, #C30101, #930000);
+    padding: 4rem 2rem 1.5rem; /* Increased padding */
 }
 
 .footer-content {
@@ -888,12 +956,14 @@ footer {
 
 .footer-links a {
     color: white;
-    transition: all 0.3s ease;
+    transition: color 0.25s ease-in-out, text-decoration-color 0.25s ease-in-out; /* Smoother underline */
+    text-decoration: underline;
+    text-decoration-color: transparent; /* Start with transparent underline */
 }
 
 .footer-links a:hover {
     color: var(--secondary-color);
-    text-decoration: underline;
+    text-decoration-color: var(--secondary-color); /* Underline appears on hover */
 }
 
 .footer-newsletter p {
@@ -907,8 +977,9 @@ footer {
 .footer-newsletter input {
     padding: 0.5rem;
     border: none;
-    border-radius: 5px 0 0 5px;
+    border-radius: 8px 0 0 8px; /* More rounded */
     width: 100%;
+    font-size: 0.95rem; /* Adjusted font size */
 }
 
 .footer-newsletter button {
@@ -916,10 +987,10 @@ footer {
     background-color: var(--secondary-color);
     color: var(--primary-color);
     border: none;
-    border-radius: 0 5px 5px 0;
+    border-radius: 0 8px 8px 0; /* More rounded */
     cursor: pointer;
-    transition: all 0.3s ease;
-    font-weight: 600;
+    transition: background-color 0.25s ease-in-out;
+    font-weight: 700; /* Bolder text */
 }
 
 .footer-newsletter button:hover {
@@ -928,15 +999,15 @@ footer {
 
 .footer-bottom {
     text-align: center;
-    padding-top: 1rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 1.5rem; /* Increased padding */
+    border-top: 1px solid rgba(255, 255, 255, 0.15); /* Slightly more visible border */
 }
 
 /* Scroll Animation Classes */
 .fade-in {
     opacity: 0;
     transform: translateY(30px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    transition: opacity 0.6s ease-in-out, transform 0.7s ease-in-out; /* Adjusted timing and easing */
     will-change: opacity, transform;
 }
 
@@ -948,14 +1019,58 @@ footer {
 .stagger-item {
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
-    will-change: opacity, transform;
+    transition: opacity 0.45s ease-in-out, transform 0.45s ease-in-out; /* Snappier timing and easing */
+    will-change: opacity, transform; /* Already has will-change */
 }
 
 .stagger-item.visible {
     opacity: 1;
     transform: translateY(0);
 }
+
+/* Image Reveal Animation */
+@keyframes imageReveal {
+    from {
+        opacity: 0.6;
+        transform: scale(0.97); /* Slightly less aggressive scale */
+        clip-path: inset(0% 50% 0% 50%); /* Example: reveal from center horizontally */
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+        clip-path: inset(0% 0% 0% 0%);
+    }
+}
+
+.menu-item img,
+.special-item img,
+.showcase-image img,
+.location-map img,
+.about-image img {
+    opacity: 0.6; /* Initial state for animation if not handled by parent */
+    transform: scale(0.97); /* Initial state for animation */
+    /* will-change: transform, opacity, clip-path; /* Use sparingly if performance issues arise */
+}
+
+/* Apply animation when parent is visible and image itself is loaded/ready */
+.stagger-item.visible .menu-item img,
+.fade-in.visible .special-item img, /* Assuming .special-item is inside a .fade-in section */
+.fade-in.visible .showcase-image img, /* Assuming .showcase-image is inside a .fade-in section */
+.fade-in.visible .location-map img, /* Assuming .location-map is inside a .fade-in section */
+.fade-in.visible .about-image img { /* Assuming .about-image is inside a .fade-in section */
+    animation: imageReveal 0.7s ease-out 0.2s forwards; /* 0.2s delay after parent becomes visible */
+}
+
+/* Ensure special-item img animates if .special-item is directly observed or part of .fade-in */
+.special-item.visible img { /* If .special-item itself is the animated element */
+    animation: imageReveal 0.7s ease-out 0.2s forwards;
+}
+/* Fallback for images that might not be direct children of .stagger-item or .fade-in.visible */
+/* This might be too broad, adjust if necessary */
+.visible img.image-reveal-target { /* Add .image-reveal-target to specific images in JS if needed */
+    animation: imageReveal 0.7s ease-out 0.2s forwards;
+}
+
 
 /* Responsive divider adjustments */
 @media screen and (max-width: 768px) {
